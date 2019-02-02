@@ -20,9 +20,7 @@ class CreateQuestionMatricesTable extends Migration
             $table->integer('question_id')->unique();
             $table->integer('user_id')->nullable();          
             $table->string('status')->default('');
-            $table->string('question_ratings')->default(0);
-
-           
+                      
         });
     }
 

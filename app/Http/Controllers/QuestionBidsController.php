@@ -12,36 +12,29 @@ use App\Http\Controllers\HomeController;
 
 use Auth;
 
-class QuestionBidsController extends QuestionController
+class QuestionBidsController extends Controller
 {
 
-    private $tutor;
-
-    private $cust_id;
-     // Post bids
-
-    //active questions 
+    
 
     private $active_questions;
 
-
-    public function PostBids(Request $request, $question_id, $tutor_id)
+        public function __costruct()
     {
-        $this->tutor = $tutor_id;
+        $this->middleware('web');
+    }
+
+
+    public function PostNewBids(Request $request, $question_id)
+    {
+
+
+        $tutor_id = Auth::user()->id;
 
         $checkbid = DB::table('question_bids')->select('tutor_id')
                     ->where('tutor_id', $tutor_id)->first();
 
-        //get custid 
-
-        $customer = DB::table('question_bodies')
-                    ->select('user_id')
-                    ->where('question_id', $question_id)
-                    ->first();
-
-        $this->cust_id = $customer->user_id;
-
-        if($checkbid  == null)
+    if($checkbid  == null)
         {
 
         //avoid bidding twice for the same tutor
@@ -50,12 +43,12 @@ class QuestionBidsController extends QuestionController
             [
                 'bidpoints' => $this->CalculatePoints(), //calculate bidpoints
 
-                'tutor_id' =>$this->tutor,
+                'tutor_id' =>Auth::user()->id,
                 'question_id' =>$question_id,
 
-                'question_deadline' =>$request->question_deadline,
+               // 'question_deadline' =>$request->question_deadline,
 
-                'bid_price' =>$request->bid_price,
+              //  'bid_price' =>$request->bid_price,
 
                 'created_at' =>\Carbon\Carbon::now()->toDateTimeString(),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
@@ -63,7 +56,7 @@ class QuestionBidsController extends QuestionController
 
         }
 
-     return redirect()-> back();
+     return redirect('question_det/'.$question_id);
     }
 
      public function CalculatePoints()
@@ -76,7 +69,7 @@ class QuestionBidsController extends QuestionController
      	//check number of Questions Answered and success rate 
 
      	$questions_ans = DB::table('assign_questions')
-     				->where('tutor_id', $this->tutor)
+     				->where('tutor_id', Auth::user()->id)
      				->where('status', 'completed')
      				->get();
 
@@ -87,9 +80,8 @@ class QuestionBidsController extends QuestionController
      	//check if the Tutor has anwered the Customer Question... Suggested 
 
      	$ans_prev = DB::table('assign_questions')
-     				->where('tutor_id', $this->tutor)
+     				->where('tutor_id', Auth::user()->id)
      				->where('status', 'completed')
-     				->where('cust_id', $this->cust_id)
      				->get();
 
         $points += 5.7 * count ($ans_prev);
@@ -103,7 +95,7 @@ class QuestionBidsController extends QuestionController
      	//Check online Points... Earn point for each login... earn points for each 10 bids in a day
 
      	$login_meta = DB::table('login_metas')
-     					->where('tutor_id', $this->tutor) //make this user id
+     					->where('tutor_id', Auth::user()->id) //make this user id
      					->get();
      	$login_count = count ($login_meta); 
 
@@ -135,26 +127,10 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
         //for promotion, Earn $20 Bonus on promtion. 
 
-    $tutor_level = DB::table('tutor_accounts')
-                    -> select('account_level')
-                    ->where('tutor_id', Auth::user()->email)
-                    ->first();
-    //check suspensions 
 
-    $suspen = new HomeController();
+        //Check if suspended 
 
-    $sus = $suspen->GetSuspensions();
-
-
-    $level = $tutor_level->account_level;
-
-    if($level == null && $sus > 0)
-    {
-        //catch tutors here before they post jobs 
-        
-        return redirect()->route('tut-profile');
-    }
-
+    
     //get the number of assigned questions which are currently active 
 
     $active = DB::table('question_history_tables')

@@ -21,7 +21,7 @@ class CreateQuestionBidsTable extends Migration
             $table->integer('tutor_id')->unique();
             $table->integer('bidpoints');
             $table->integer('bid_price');
-            $table->text('question_deadline');
+          
         });
     }
 

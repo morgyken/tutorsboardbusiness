@@ -63,6 +63,8 @@
                                          <a href="#">Urgency: {{ $question->urgency }} | Deadline: {{ $question->question_deadline }} </a> 
 
                                           <a href="#">Question ID: {{ $question->question_id }} </a> 
+
+                                           <a href="#">Bids: {{ $bids }} </a> 
                                       </div>
                                     </div>
                                     
@@ -92,7 +94,10 @@
                                     <button class="btn btn-warning btn-rounded mb-4"  data-toggle="modal" data-target="#modal-take"> Take Order</button>
                                 </div>
                                 <div class="col-md-4" style="text-align: center;">
-                                    <button class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#modal-bid">Place Bid</button>
+                                    
+                                     <button type="button" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#modal-bid">
+                                       Apply for Order
+                                      </button>
                                 </div>
 
                                  <div class="col-md-4" style="text-align: right;">
@@ -184,12 +189,11 @@
 
         @include('modals.tutor.modal-opt-out')
 
-        @include('modals.tutor.modal-bid')
-            
-        @include('modals.tutor.modal-take')
 
- 
+        @include('tutor.make-bids')
 
+
+         @include('tutor.take-question')  
 
         <!--================Blog Area =================-->
         

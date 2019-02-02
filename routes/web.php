@@ -15,8 +15,7 @@ Route::get('/', function () {
     return view('general.landing');
 });
    
-
-   Route::get('/sample', function () {
+Route::get('/sample', function () {
     return view('question.question-det');
 });
    
@@ -34,6 +33,14 @@ Route::get('/users/logout', 'Auth\LoginController@userLogout')->name('user.logou
 
 
 Route::post('messages/{questionid}',	['uses' => 'UserMessageController@PostMessages', 'as' =>'user-messages']);
+
+Route::post('bids/{question_id}/',
+
+	[ 'as'=>'post-bids', 'uses'=>'QuestionBidsController@PostNewBids']);
+
+Route::post('/assign/{question_id}/',
+
+	[ 'as'=>'assign-question', 'uses'=>'QuestionBidsController@AssignQuestion']);
 
 
 Route::prefix('admin')->group(function (){
@@ -272,13 +279,7 @@ Route::get('/bids/{question_id}/',
 
 	[ 'as'=>'get-bids', 'uses'=>'QuestionController@GetTBids']);
 
-Route::post('/bids/{question_id}/{tutor_id}',
 
-	[ 'as'=>'post-bids', 'uses'=>'QuestionBidsController@PostBids']);
-
-Route::post('/assign/{question_id}/{tutor_id?}',
-
-	[ 'as'=>'assign-question', 'uses'=>'QuestionBidsController@AssignQuestion']);
 
 Route::get('home/{params?}', [ 'as'=>'home', 'uses'=>'HomeController@index']);
 

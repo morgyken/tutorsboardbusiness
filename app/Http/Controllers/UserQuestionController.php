@@ -222,10 +222,13 @@ class UserQuestionController extends Controller
         *
         */
 
-        $bids = DB::table('question_bids') ->where('question_id', $question_id)
+        $bids = DB::table('question_bids')
+                  ->select('bidpoints')->where('question_id', $question_id)
                   ->orderby('bidpoints')
-                  ->take(5)
                   ->get();
+        //get the count of bids 
+
+        $bids =count ($bids);
 
 
         $interval = $time->getDeadlineInSeconds($question_id);
@@ -300,9 +303,10 @@ class UserQuestionController extends Controller
 
                     //messages
 
-                    'messages'     => $messages,
+                    'messages' => $messages,
 
                     //'commfiles' => $comm_files
+
 
                   ]);
 
