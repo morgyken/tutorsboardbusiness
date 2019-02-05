@@ -10,7 +10,7 @@
     function ConvertTime12( $seconds){
 
         $dtF = new \DateTime('@0');
-        $dtT = new \DateTime("@$seconds");
+        $dtT = new \Dacc teTime("@$seconds");
 
         $days = $dtF->diff($dtT)->format('%a');
 
@@ -20,8 +20,6 @@
         else {
             return $dtF->diff($dtT)->format('%h hrs %i min');
         }
-
-
 
     }
 

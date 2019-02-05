@@ -42,6 +42,15 @@ Route::post('/assign/{question_id}/',
 
 	[ 'as'=>'assign-question', 'uses'=>'QuestionBidsController@AssignQuestion']);
 
+Route::post('/reassign/{question_id}/',
+
+	[ 'as'=>'reassign-question', 'uses'=>'QuestionBidsController@ReassignQuestions']);
+
+//downloads
+
+Route::any('file-download/{question_id}/{filename}/', ['as'=>'user-download', 
+		'uses' =>'UserQuestionController@downloads']);
+
 
 Route::prefix('admin')->group(function (){
 	

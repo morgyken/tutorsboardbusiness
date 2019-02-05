@@ -17,7 +17,7 @@ class CreateQuestionHistoryTablesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->rememberToken();
-            $table->integer('question_id')->unique();
+            $table->integer('question_id');
             $table->integer('user_id')->nullable();          
             $table->string('status')->default('');
             

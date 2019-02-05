@@ -8,31 +8,31 @@ use App\Http\Controllers\UpdateQuestionController;
 
 use DB;
 
-use App\Http\Controllers\HomeController;
+//use App\Http\Controllers\HomeController;
 
 use Auth;
 
 class QuestionBidsController extends Controller
 {
 
-    
 
     private $active_questions;
 
-        public function __costruct()
+    public function __costruct()
     {
         $this->middleware('web');
     }
 
-
     public function PostNewBids(Request $request, $question_id)
     {
 
+    $tutor_id = Auth::user()->id;
 
-        $tutor_id = Auth::user()->id;
-
-        $checkbid = DB::table('question_bids')->select('tutor_id')
-                    ->where('tutor_id', $tutor_id)->first();
+    $checkbid = DB::table('question_bids')
+                    ->select('tutor_id')
+                    ->where('tutor_id', $tutor_id)
+                    ->where('question_id', $question_id)
+                    ->first();
 
     if($checkbid  == null)
         {
@@ -143,50 +143,19 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
     //check for admin who is in the tuting 
 
-    if($level == 'admin'){
-        $this->AssignQuestions($question); //assign express if admin
-    }
-
     //check if a team member is tutoring
-    if($level == 'team' )
-    {
-         if($count_active < 14)
-        {
-             $this->AssignQuestions($question); //assign express if admin
-        }
-    }
-
+    
     //check if senior 
 
-    if($level == 'senior' )
-    {
-         if($count_active < 8)
-        {
-             $this->AssignQuestions($question); //assign express if admin
-        }
-    }
-
+    
     ///check if Junior 
 
     
-    if($level == 'junior' )
-    {
-         if($count_active < 5)
-        {
-             $this->AssignQuestions($question); //assign express if admin
-        }
-    }
-
-    if($level == 'New' )
-    {
-         if($count_active <3)
-        {
-             $this->AssignQuestions($question); //assign express if admin
-        }
-    }
+    $this->AssignQuestions($question); //assign express if admin
+       
       //return home
 
-    return redirect()->back();
+    return redirect('question_det/'.$question);
 
 
     }
@@ -196,17 +165,14 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
         $update = new UpdateQuestionController();
 
-        $status =  "Assigned";
+        $status =  "taken";
 
         $message = "The Question has been Assigned ";
 
          DB::table('question_matrices')->where('question_id', $question)
                     ->update(
-                    [     
-                                           
+                    [                                             
                         'status' =>$status,
-
-                        'message' =>$message,
 
                         'user_id' => Auth::user()->id, 
                                              
@@ -228,9 +194,47 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
                     ]
                 );
 
+        return redirect('question_det/'.$question);
+
     }
 
+    public function ReassignQuestions ($question)
+    {
 
+        $update = new UpdateQuestionController();
+
+        $status =  "new";
+
+        $message = "The Question has been Reassigned ";
+
+         DB::table('question_matrices')->where('question_id', $question)
+                    ->update(
+                    [                                             
+                        'status' =>$status,
+
+                        'user_id' => Auth::user()->id, 
+                                             
+                        'updated_at' => \Carbon\Carbon::now()->toDateTimeString()
+                    ]
+                );
+
+          DB::table('question_history_tables')
+                ->insert(
+                    [       
+                                             
+                        'status' =>$status,
+
+                        'question_id' => $question,
+                 
+                        'user_id' => Auth::user()->id,
+
+                        'updated_at' => \Carbon\Carbon::now()->toDateTimeString()
+                    ]
+                );
+
+        return redirect('question_det/'.$question);
+
+    }
 
 
 }

@@ -212,7 +212,9 @@ class UserQuestionController extends Controller
        $question =  DB::table('question_bodies')
             ->join('question_details', 'question_bodies.question_id', '=', 'question_details.question_id')
             ->join('question_matrices', 'question_details.question_id', '=', 'question_matrices.question_id')
+
             ->where('question_details.question_id', '=', $question_id)
+
             ->first();
 
         $time = new DateTimeModel();
@@ -221,6 +223,8 @@ class UserQuestionController extends Controller
         * return the comments in the following
         *
         */
+
+        $taken = 
 
         $bids = DB::table('question_bids')
                   ->select('bidpoints')->where('question_id', $question_id)

@@ -26,12 +26,16 @@ class HomeController extends Controller
      */
   
  
-      public function index()
+    public function index()
     {
         $question=  DB::table('question_bodies')
 
             ->join('question_details', 'question_bodies.question_id', '=', 'question_details.question_id')
-            ->orderBy('question_bodies.created_at', 'desc')
+            ->join('question_matrices', 'question_details.question_id', '=', 'question_matrices.question_id')
+
+            ->where('question_matrices.status', 'new')
+
+            ->orderBy('question_details.question_deadline', 'desc')
 
             ->paginate(25);
 
