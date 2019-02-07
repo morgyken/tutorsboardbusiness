@@ -1,4 +1,10 @@
 <?php
+$dbopts     = parse_url(getenv('DATABASE_URL'));
+$host       = $url["host"]?? null;
+$username   = $url["pass"] ?? null;
+$password   = $url ["pass"]?? null;
+$database   = substr($url["path"], 1) ?? null;
+
 
 return [
 
@@ -13,7 +19,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql_production'),
 
     /*
     |--------------------------------------------------------------------------
