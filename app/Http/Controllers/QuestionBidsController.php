@@ -169,7 +169,46 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
         $message = "The Question has been Assigned ";
 
-         DB::table('question_matrices')->where('question_id', $question)
+        $assigned_questions = DB::table('question_matrices')
+                                ->where('user_id', Auth::user()->id)
+                                ->where ('status', 'taken')
+                                ->get();
+
+        //Get account Tier 
+
+        $account_rating = DB::table('user')->select('account_level')
+                        ->where ('id', Auth::user()->id)
+                        ->first();
+
+
+        $count = count($assigned_questions);
+
+        $maximum = 0;
+
+        switch ($account_rating) {
+            case 1:
+              
+                break;
+            case 2:
+                $maximum = 8;
+                break;
+
+            case 3:
+                $maximum = 11;
+                break;
+
+            case 4:
+                $maximum = 29;
+                break;
+
+            case 5:
+                $maximum = 50;
+                break;
+        }
+
+        if($count <= $maximum)
+        {
+            DB::table('question_matrices')->where('question_id', $question)
                     ->update(
                     [                                             
                         'status' =>$status,
@@ -193,7 +232,8 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
                         'updated_at' => \Carbon\Carbon::now()->toDateTimeString()
                     ]
                 );
-
+        }
+        
         return redirect('question_det/'.$question);
 
     }

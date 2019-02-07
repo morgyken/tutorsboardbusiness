@@ -40,7 +40,7 @@ Route::post('bids/{question_id}/',
 
 Route::post('/assign/{question_id}/',
 
-	[ 'as'=>'assign-question', 'uses'=>'QuestionBidsController@AssignQuestion']);
+	[ 'as'=>'assign-question', 'uses'=>'QuestionBidsController@AssignQuestion'])->middleware('assign');
 
 Route::post('/reassign/{question_id}/',
 

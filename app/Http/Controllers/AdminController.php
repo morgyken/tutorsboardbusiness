@@ -31,7 +31,7 @@ class AdminController extends Controller
             ->join('question_details', 'question_bodies.question_id', '=', 'question_details.question_id')
             ->orderBy('question_bodies.created_at', 'desc')
 
-            ->paginate(25);
+            ->paginate(15);
 
            // dd($question);
 

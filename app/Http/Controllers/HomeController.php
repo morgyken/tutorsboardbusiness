@@ -37,7 +37,7 @@ class HomeController extends Controller
 
             ->orderBy('question_details.question_deadline', 'desc')
 
-            ->paginate(25);
+            ->paginate(10);
 
            // dd($question);
 

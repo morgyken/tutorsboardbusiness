@@ -20,9 +20,7 @@
         else {
             return $dtF->diff($dtT)->format('%h hrs %i min');
         }
-
-
-
+        
     }
 
     function getDeadlineInSeconds1($deadline){
