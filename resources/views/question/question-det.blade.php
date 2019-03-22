@@ -104,6 +104,7 @@
                             </div>
                      
                         <div class="comments-area">
+                            
                             @foreach($messages as $comm)
                     
                             <div class="comment-list">

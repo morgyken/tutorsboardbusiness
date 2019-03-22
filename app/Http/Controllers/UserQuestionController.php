@@ -150,10 +150,19 @@ class UserQuestionController extends Controller
 
     public function downloads($question, $fileName){
 
-             $dest = public_path().'/storage/uploads/'.$question.'/question/'.$fileName;
+            $dest = public_path().'/storage/uploads/'.$question.'/question/'.$fileName;
 
             return Response::download($dest);
     }
+
+    public function ResponseDownloads($question, $messageid, $fileName){
+
+          $dest = public_path().'/storage/uploads/'.$question.'/response/'.$messageid.'/'.$fileName;
+
+          return Response::download($dest);
+    }
+
+    
 
     /*
      * comments files download
@@ -223,13 +232,12 @@ class UserQuestionController extends Controller
         * return the comments in the following
         *
         */
-
-        $taken = 
-
         $bids = DB::table('question_bids')
                   ->select('bidpoints')->where('question_id', $question_id)
                   ->orderby('bidpoints')
                   ->get();
+
+
         //get the count of bids 
 
         $bids =count ($bids);
@@ -271,6 +279,8 @@ class UserQuestionController extends Controller
 
         $status = $status->status;
         }
+
+      //  dd($status);
 
       if(Auth::check())
        {
@@ -340,8 +350,35 @@ class UserQuestionController extends Controller
 
     }
 
+    // Return Question Details 
 
-    // count question matrices
+    public static function ResponseFiles($question_id, $messageid)
+    {
+
+        // path 
+        $path =public_path().'/storage/uploads/'.$question_id.'/response/'.$messageid;
+
+        if(file_exists ($path))
+        {
+             $filesInFolder = \File::files($path);
+
+            foreach($filesInFolder as $path)
+            {
+                $manuals[] = pathinfo($path);
+            }
+            return $manuals;
+        }
+
+        else {
+           return array();
+        }
+
+     
+
+        
+    }
+
+   // count question matrices
     public function GetBids($question_id)
     {
 

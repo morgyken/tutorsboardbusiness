@@ -48,7 +48,7 @@ class QuestionBidsController extends Controller
 
                // 'question_deadline' =>$request->question_deadline,
 
-              //  'bid_price' =>$request->bid_price,
+                'bid_price' =>$request->bid_price,
 
                 'created_at' =>\Carbon\Carbon::now()->toDateTimeString(),
                 'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
@@ -108,7 +108,7 @@ class QuestionBidsController extends Controller
      }
 
 
-public function AssignQuestion ( Request $request, $question, $tutor=null)
+public function AssignQuestion (Request $request, $question, $tutor=null)
     {
 
         //if tutor is senior then assign Questions
@@ -129,9 +129,8 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
 
         //Check if suspended 
-
     
-    //get the number of assigned questions which are currently active 
+        //get the number of assigned questions which are currently active 
 
     $active = DB::table('question_history_tables')
                 ->where('user_id', Auth::user()->email) 
@@ -176,7 +175,7 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
         //Get account Tier 
 
-        $account_rating = DB::table('user')->select('account_level')
+        $account_rating = DB::table('users')->select('account_level')
                         ->where ('id', Auth::user()->id)
                         ->first();
 
@@ -185,7 +184,7 @@ public function AssignQuestion ( Request $request, $question, $tutor=null)
 
         $maximum = 0;
 
-        switch ($account_rating) {
+        switch ($account_rating->account_level) {
             case 1:
               
                 break;

@@ -20,6 +20,7 @@
         <form action="{{ route ('post-bids', ['question_id' => $question->question_id])}}" method="POST">
           <!-- CSRF field is a must -->
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+         <input type="hidden" name="bid_price" value="{{  $question->tutor_price }}">
         <!-- Modal footer -->
          <div class="modal-footer" style="text-align: left;">
           <button type="submit" class="btn btn-primary">Continue</button>

@@ -86,23 +86,34 @@
                      
                             {!! htmlspecialchars_decode($question-> question_body) !!}
 
-
-                    
+                   
                              <div class="news_d_footer">
+
+                                @if($status != 'taken')
                             
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <button class="btn btn-warning btn-rounded mb-4"  data-toggle="modal" data-target="#modal-take"> Take Order</button>
                                 </div>
-                                <div class="col-md-4" style="text-align: center;">
+
+                             
+
+                                <div class="col-md-6" style="text-align: right;">
                                     
-                                     <button type="button" class="btn btn-primary btn-rounded mb-4" data-toggle="modal" data-target="#modal-bid">
+                                     <button type="button" class="btn btn-primary btn-rounded mb-4"  data-toggle="modal" data-target="#modal-bid">
                                        Apply for Order
                                       </button>
                                 </div>
+                                   @else
+                                    <div class="col-md-8">
+                                    <p> The Question has Been Assigned to tutor {{ Auth::user()->name}} </p>
+                                </div> 
+
 
                                  <div class="col-md-4" style="text-align: right;">
                                     <button class="btn btn-warning btn-rounded mb-4"  data-toggle="modal" data-target="#modal-optout">Opt out</button>
-                                </div>                              
+                                </div> 
+
+                                @endif                             
                                
                             </div>
 
@@ -124,6 +135,7 @@
                             <div class="news_d_footer">                               
                                <h5> Conversation History </h5>
                             </div>
+
                      
                         <div class="comments-area">
                             @foreach($messages as $comm)
@@ -141,12 +153,34 @@
                                             <p class="comment">
                                                {{ $comm->message }}
                                             </p>
-                                        </div>                                        
+                                        </div> 
+                                       
+
                                     </div>                                    
                                 </div>
                             </div>
-                            
-                           
+                            <?php 
+                            $resfiles = \App\Http\Controllers\UserQuestionController::ResponseFiles($question->question_id,  $comm->messageid);
+
+                            ?>
+                            <div class="col-md-12"> 
+                                @foreach($resfiles as $file)
+
+                                    <p class="down-files"><a href="{{route('response-download',
+                                                    [
+                                                        'question_id' => $question->question_id,
+                                                        'messageid' => $comm->messageid,
+                                                        'filename'=>$file['basename']
+                                                     ])}}"
+                                        >
+                                    <i class="icon-download-alt">{{$file['basename'] }} </i></a>   
+                                    </p>
+                                @endforeach 
+                            </div>       
+                            <div class="news_d_footer">     
+                                        
+                            </div>
+                    
                             @endforeach  
                             
                             </div>                                                              
@@ -160,7 +194,7 @@
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 
                                 <div class="form-group">
-                                    <input type="text" class="form-control" id="subject" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'" name="title">
+                                    <input type="text" class="form-control" id="title" placeholder="Subject" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'" name="title">
                                     <input type="hidden" name="qid" value="{{$question->question_id}}">
                                 </div>
                                 <div class="form-group">
@@ -171,7 +205,7 @@
                                 
                                         <div class="custom-file">
 
-                                            <input type="file" name="file[]" class="form-control">                                            
+                                            <input type="file" name="file[]" class="form-control" multiple>                                            
                                             <div class="invalid-feedback">Example invalid custom file feedback</div>
                                           </div>
                                     </div>      

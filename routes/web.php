@@ -49,7 +49,13 @@ Route::post('/reassign/{question_id}/',
 //downloads
 
 Route::any('file-download/{question_id}/{filename}/', ['as'=>'user-download', 
+
 		'uses' =>'UserQuestionController@downloads']);
+
+Route::any('file-downloads/{question_id}/{messageid}/{filename}/', ['as'=>'response-download', 
+	
+		'uses' =>'UserQuestionController@ResponseDownloads']);
+
 
 
 Route::prefix('admin')->group(function (){

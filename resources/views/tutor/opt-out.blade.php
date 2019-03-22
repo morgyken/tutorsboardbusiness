@@ -15,7 +15,7 @@
         
         <!-- Modal body -->
         <div class="modal-body">
-          <h3> Opting Out May reduce your progress report</h3>
+          <h3> Opting Out May reduce your progress as a tutor</h3>
          <h5> By clicking OK you are confirming that you will post the Answer within the given budget and time</h5>
 
         </div>

@@ -1,0 +1,52 @@
+import java.util.*;
+
+public class JavaPostFix {
+
+static int PostFixEvaluation(String str)
+{
+    Scanner scanner = new Scanner(str);
+    Stack<Integer> postfix = new Stack<Integer>();
+
+    while (scanner.hasNext()) {
+        if (scanner.hasNextInt()) {
+            postfix.push(scanner.nextInt());
+            continue;
+        }
+        int b = postfix.pop();
+        int a = postfix.pop();
+        char op = scanner.next().charAt(0);
+        if      (op == '+') postfix.push(a + b);
+        else if (op == '-') postfix.push(a - b);
+        else if (op == '*') postfix.push(a * b);
+        else if (op == '/') postfix.push(a / b);
+        else if (op == '%') postfix.push(a % b);
+    }
+
+    scanner.close();
+    return postfix.pop();
+}
+
+
+
+public static void main(String [] args )
+{
+			
+	String data = "8" , data1= "1", data2 ="2", data3 ="4", data4 = "5", data5 = "3";
+	
+	String string = data1+ " " + data + " + " + data3 + " * " + data4 + " - "; 
+		
+	//	data1 data * data3 * data1 – / data4 data5* +
+		
+	String string1 = data1 + " " + data + " * " + data3 + " " + data1 + " - / " + data4 + " " + data5  + " * + "; 
+		
+	System.out.println("PostFix Evaluation is as shown below ");
+	
+	System.out.println("---------------------------------------------------------------- ");
+	
+	
+	System.out.println("1. Data1 data + data3 * data4 –: " + PostFixEvaluation(string));
+	
+	System.out.println("2. Data1 data * data3 * data1 – / data4 data5* + : " + PostFixEvaluation(string1));
+}
+
+}

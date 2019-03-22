@@ -16,9 +16,8 @@
 
 
                   <div class="row d-flex justify-content-center align-items-center">
-
-                  
                     <div class="col-xl-12">
+
                         <form method="post" action="{{route('post-questions')}}"  enctype="multipart/form-data">
 
                         <div class="form-group">
@@ -28,10 +27,7 @@
                         <div class="form-group">
                         <textarea class="form-control"></textarea>
                       </div>
-                      
-
-               
-                              
+                                                  
                     <div class="form-group">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                     <button type="submit" class="btn btn-success">Continue</button>

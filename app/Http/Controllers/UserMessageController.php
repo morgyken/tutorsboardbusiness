@@ -34,7 +34,7 @@ public function PostMessages(Request $request, $question){
 
         //upload files 
 
-        $path = public_path().'/storage/uploads/'.$question.'/question/';
+        $path = public_path().'/storage/uploads/'.$question.'/response/'.$this->messageid;
 
         // auth file uploads 
 
