@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateQuestionBidsTable extends Migration
+class CreatePostReplyMessagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateQuestionBidsTable extends Migration
      */
     public function up()
     {
-        Schema::create('question_bids', function (Blueprint $table) {
+        Schema::create('post_reply_messages', function (Blueprint $table) {
             $table->increments('id');
+            $table->text('message');
+            $table->text('user');
+            $table->text('messageid');
+            $table->text('role');
+            $table->text('question_id');
             $table->timestamps();
             $table->rememberToken();
-            $table->integer('question_id');
-            $table->integer('tutor_id')->unique();
-            $table->integer('bidpoints');
-            $table->integer('bid_price');
-          
         });
     }
 
@@ -32,6 +32,6 @@ class CreateQuestionBidsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('question_bids');
+        Schema::dropIfExists('post_reply_messages');
     }
 }

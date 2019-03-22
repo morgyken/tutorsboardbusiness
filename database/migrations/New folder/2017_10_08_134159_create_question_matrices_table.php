@@ -19,7 +19,8 @@ class CreateQuestionMatricesTable extends Migration
             $table->rememberToken();
             $table->integer('question_id')->unique();
             $table->integer('user_id')->nullable();          
-            $table->string('status')->default('');           
+            $table->string('status')->default('');
+                      
         });
     }
 

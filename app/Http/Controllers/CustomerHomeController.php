@@ -8,11 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\UserController;
 use DB;
 
-use Illuminate\Http\Request;
-
 class CustomerHomeController extends Controller
 {
     //Get the completed Questions 
+
+    public function __costruct()
+    {
+        $this->middleware('auth:customer');
+    }
+
+    public function index ()
+    {
+      return view ('customer.cust-landing')
+      
+
+    }
+
 
     public function getCustomerQuestions ($status= 'completed')
     {

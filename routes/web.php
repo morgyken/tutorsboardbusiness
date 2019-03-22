@@ -56,6 +56,12 @@ Route::any('file-downloads/{question_id}/{messageid}/{filename}/', ['as'=>'respo
 	
 		'uses' =>'UserQuestionController@ResponseDownloads']);
 
+// customer urls here 
+
+Route::get('/customer', 'CustomerHomeController@index');
+
+// End Customer URL 
+
 
 
 Route::prefix('admin')->group(function (){
