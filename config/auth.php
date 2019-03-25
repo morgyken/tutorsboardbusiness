@@ -57,7 +57,7 @@ return [
             'provider' => 'admins',
         ],
 
-         'customers' => [
+         'customer' => [
             'driver' => 'session',
             'provider' => 'customers', //custsomer guard
         ],

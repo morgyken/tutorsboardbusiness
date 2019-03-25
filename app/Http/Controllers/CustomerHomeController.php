@@ -19,10 +19,14 @@ class CustomerHomeController extends Controller
 
     public function index ()
     {
-      return view ('customer.cust-landing')
-      
-
+      return view ('customer.cust-landing');
     }
+
+    public function dashboard ()
+    {
+      return view ('customer.cust-home');
+    }
+
 
 
     public function getCustomerQuestions ($status= 'completed')

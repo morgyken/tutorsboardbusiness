@@ -58,8 +58,21 @@ Route::any('file-downloads/{question_id}/{messageid}/{filename}/', ['as'=>'respo
 
 // customer urls here 
 
-Route::get('/customer', 'CustomerHomeController@index');
+Route::prefix('customer')->group(function (){
 
+	Route::get('/login','Auth\CustomerLoginController@login')->name('customer.login');
+
+	Route::post('/login','Auth\CustomerLoginController@login')->name('customer.login.submit');
+
+	Route::get('/', 'CustomerHomeController@index')->name('customer.dashboard');
+
+	Route::get('/home', 'CustomerHomeController@home')->name('customer.home');
+
+	Route::get('/register', 'Auth\CustomerRegisterController@showRegistrationForm')->name('customer.register');
+
+	Route::post('/register', 'Auth\CustomerRegisterController@create')->name('customer.register.submit');
+
+}); 
 // End Customer URL 
 
 

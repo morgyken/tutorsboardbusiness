@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use App\CustomerModel;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
-class RegisterController extends Controller
+use Illuminate\Auth\Events\Registered;
+
+class CustomerRegisterController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -20,24 +24,45 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
-
-    /**
+   /**
      * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
 
+  
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+
+    use AuthenticatesUsers;
+
     public function __construct()
     {
         $this->middleware('guest');
     }
+
+    protected function guard()
+    {
+        return Auth::guard('customer');
+    }
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return view ('auth.customers.cust-register');
+    } 
+    
+    public function redirectTo()
+    {
+        return 'customer/home';
+    }
+
 
     /**
      * Get a validator for an incoming registration request.
@@ -60,12 +85,27 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
-        return User::create([
+
+        $data = ['name' => $request->name, 'email' => $request-> email, 'password' => $request->password];
+
+        $this->validator ($data);
+
+        $register = CustomerModel::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+
+     if (Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) 
+      {
+           return redirect()->intended(route('customer.home'));
+      }
+        else {
+            return redirect('/customer');
+        }
     }
+
+
 }
